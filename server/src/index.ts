@@ -1,21 +1,24 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { config } from './config/index.js';
-import { corsOptions, securityHeaders } from './middleware/cors.js';
-import { apiLimiter } from './middleware/rateLimiter.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import stockDataRoutes from './routes/stockData.js';
-import holdingsRoutes from './routes/holdings.js';
-import healthRoutes from './routes/health.js';
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import { config } from "./config/index.js";
+import { corsOptions, securityHeaders } from "./middleware/cors.js";
+import { apiLimiter } from "./middleware/rateLimiter.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import stockDataRoutes from "./routes/stockData.js";
+import holdingsRoutes from "./routes/holdings.js";
+import healthRoutes from "./routes/health.js";
 
 const app = express();
 
-// Resolve __dirname for ES modules
+/**
+ * Correct __dirname for CommonJS output
+ * Works with: "module": "CommonJS"
+ */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware
+// Middlewares
 app.use(securityHeaders);
 app.use(corsOptions);
 app.use(express.json());
@@ -24,22 +27,26 @@ app.use(express.urlencoded({ extended: true }));
 // Rate limiting
 app.use(apiLimiter);
 
-const publicPath = path.join(__dirname, 'public');
+// Static React build path (Render will place dist here)
+const publicPath = path.join(__dirname, "public");
 app.use(express.static(publicPath));
 
-app.use('/health', healthRoutes);
-app.use('/api', stockDataRoutes);
-app.use('/api', holdingsRoutes);
+// API routes
+app.use("/health", healthRoutes);
+app.use("/api", stockDataRoutes);
+app.use("/api", holdingsRoutes);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+// Fallback for React SPA
+app.get("*", (req, res) => {
+  res.sendFile(path.join(publicPath, "index.html"));
 });
 
-// Error handler (must be last)
+// Global error handler
 app.use(errorHandler);
 
-// Start server
-const PORT = config.port;
+// Start Server
+const PORT = config.port || 5000;
+
 app.listen(PORT, () => {
   console.log(`
 ════════════════════════════════════════════
@@ -51,15 +58,15 @@ app.listen(PORT, () => {
 ════════════════════════════════════════════
 `);
 
-  console.log('Available endpoints:');
-  console.log('  GET    /health');
-  console.log('  GET    /api/holdings');
-  console.log('  GET    /api/holdings/:id');
-  console.log('  POST   /api/holdings');
-  console.log('  GET    /api/stock-data');
-  console.log('  POST   /api/stock-data/batch');
-  console.log('  GET    /api/portfolio');
-  console.log('  POST   /api/portfolio/refresh');
+  console.log("Available endpoints:");
+  console.log("  GET    /health");
+  console.log("  GET    /api/holdings");
+  console.log("  GET    /api/holdings/:id");
+  console.log("  POST   /api/holdings");
+  console.log("  GET    /api/stock-data");
+  console.log("  POST   /api/stock-data/batch");
+  console.log("  GET    /api/portfolio");
+  console.log("  POST   /api/portfolio/refresh");
 });
 
 export default app;
