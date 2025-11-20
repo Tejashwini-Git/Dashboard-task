@@ -312,7 +312,7 @@ router.post('/portfolio/refresh', async (_req: Request, res: Response, next: Nex
 
     res.json({
       success: true,
-      data: data.data,
+      data: (data as any).data,
       message: 'Portfolio refreshed',
       timestamp: Date.now(),
     });

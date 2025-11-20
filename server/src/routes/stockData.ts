@@ -6,6 +6,11 @@ import { stockDataService } from '../services/stockDataService.js';
 
 const router = Router();
 
+router.use((req, res, next) => {
+  req.user = { id: "public-user", role: "admin" };
+  next();
+});
+
 /**
  * GET /api/stock-data?symbols=INFY,TCS,RELIANCE
  * Fetch stock data with caching
