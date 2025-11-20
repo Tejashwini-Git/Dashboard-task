@@ -3,7 +3,7 @@
  * Replaces Supabase client with Express backend endpoints
  */
 
-const API_BASE_URL = 'https://dashboard-task-ea9ucblq0-dashboards-projects-ddecf11f.vercel.app';
+const API_BASE_URL = 'https://dashboard-task-jl9j.onrender.com';
 
 export interface Holding {
   id: string;
@@ -121,4 +121,5 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
+
 
