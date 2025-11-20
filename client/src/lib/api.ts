@@ -1,6 +1,6 @@
 /**
  * API client for backend communication
- * Replaces Supabase client with Express backend endpoints
+ * Replaces Supabase client with Express backend endpoints.
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dashboard-task-ea9ucblq0-dashboards-projects-ddecf11f.vercel.app/';
