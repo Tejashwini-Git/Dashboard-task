@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "lib": ["ES2020"],
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "allowJs": false,
     "strict": true,
@@ -20,3 +20,4 @@
   "include": ["src"],
   "exclude": ["node_modules"]
 }
+
