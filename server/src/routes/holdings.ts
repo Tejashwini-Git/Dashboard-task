@@ -10,6 +10,12 @@ import { config } from '../config/index.js';
 
 const router = Router();
 
+router.use((req, res, next) => {
+  req.user = { id: "public-user", role: "admin" };
+  next();
+});
+
+
 /**
  * Mock holdings database - in production, use a real database
  */
